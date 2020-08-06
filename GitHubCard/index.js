@@ -4,6 +4,9 @@
     https://api.github.com/users/<your name>
 */
 
+import axios from "axios";
+axios.get("https://api.github.com/users/kenCosgrove");
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -15,7 +18,13 @@
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
+    
 */
+
+axios.get("https://api.github.com/users/kenCosgrove").then(() => {
+  const newCard = cardMaker(gitObj);
+  cards.appendChild(newCard);
+});
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -49,6 +58,45 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker(gitObj) {
+  // instantiating the elements
+  const cards = document.querySelector(".cards");
+  const card = document.createElement("div");
+  const info = document.createElement("div");
+  const image = document.createElement("img");
+  const name = document.createElement("h3");
+  const user = document.createElement("p");
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+  const link = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+  // setting class names, attributes and text
+  image.src = gitObj.avatar_url;
+  name.textContent = gitObj.name;
+  user.textContent = gitObj.login;
+  location.textContent = `location: ${gitObj.location}`;
+  link.setAttribute("href", gitObj.url);
+  profile.textContent = `Profile: ${link}`;
+  followers.textContent = `Followers: ${gitObj.followers}`;
+  following.textContent = `Following: ${gitObj.following}`;
+  bio.textContent = `Bio: ${gitObj.bio}`;
+  card.classList.add("card");
+  info.classList.add("card-info");
+  name.classList.add("name");
+  user.classList.add("username");
+  // creating the hierarchy
+  cards.appendChild(card);
+  card.appendChild(image, info);
+  info.appendChild(name, user, location, profile, followers, following, bio);
+  profile.appendChild(link);
+  //return card
+  return card;
+}
+
+cardMaker("https://api.github.com/users/kenCosgrove");
 
 /*
   List of LS Instructors Github username's:

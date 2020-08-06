@@ -16,22 +16,21 @@ import axios from "axios";
 
 /*
   STEP 4: Pass the data received from Github into your function,
-    and append the returned markup to the DOM as a child of .cards
+    and append the returned markup to the DOM as 
+    a child of .cards
     
 */
-const cards = document.querySelector(".cards");
-axios
+
+const githubProf = axios
   .get("https://api.github.com/users/kenCosgrove")
   .then((response) => {
-    response.data.forEach((item) => {
-      const newCard = cardMaker(item);
-      cards.appendChild(newCard);
-    });
+    return response.data;
   })
   .catch((error) => {
     console.log("error");
   });
-
+const newCard = cardMaker(githubProf);
+cards.appendChild(newCard);
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -85,7 +84,8 @@ function cardMaker(gitObj) {
   name.textContent = gitObj.name;
   user.textContent = gitObj.login;
   location.textContent = `location: ${gitObj.location}`;
-  link.setAttribute("href", gitObj.url);
+  link.href = gitObj.url;
+  link.textContent = "user github";
   profile.textContent = `Profile: ${link}`;
   followers.textContent = `Followers: ${gitObj.followers}`;
   following.textContent = `Following: ${gitObj.following}`;
@@ -110,8 +110,7 @@ function cardMaker(gitObj) {
   return card;
 }
 
-cardMaker({ name: "aj" });
-
+cardMaker(githubProf);
 /*
   List of LS Instructors Github username's:
     tetondan

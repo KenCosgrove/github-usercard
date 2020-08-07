@@ -21,16 +21,15 @@ import axios from "axios";
     
 */
 
-const githubProf = axios
+axios
   .get("https://api.github.com/users/kenCosgrove")
   .then((response) => {
-    return response.data;
+    const newCard = cardMaker(response.data);
   })
   .catch((error) => {
     console.log("error");
   });
-const newCard = cardMaker(githubProf);
-cards.appendChild(newCard);
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -43,7 +42,24 @@ cards.appendChild(newCard);
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell",
+];
+
+followersArray.forEach((name) => {
+  axios
+    .get(`https://api.github.com/users/${name}`)
+    .then((response) => {
+      const newCard = cardMaker(response.data);
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+});
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -85,8 +101,8 @@ function cardMaker(gitObj) {
   user.textContent = gitObj.login;
   location.textContent = `location: ${gitObj.location}`;
   link.href = gitObj.url;
-  link.textContent = "user github";
-  profile.textContent = `Profile: ${link}`;
+  link.textContent = gitObj.login;
+  profile.textContent = `Profile: `;
   followers.textContent = `Followers: ${gitObj.followers}`;
   following.textContent = `Following: ${gitObj.following}`;
   bio.textContent = `Bio: ${gitObj.bio}`;
@@ -110,7 +126,6 @@ function cardMaker(gitObj) {
   return card;
 }
 
-cardMaker(githubProf);
 /*
   List of LS Instructors Github username's:
     tetondan
